@@ -231,10 +231,19 @@ export default function AssignmentEditor() {
                 </tbody>
             </table>
             <hr />
-            <div align="right">
-                <button type="button" id="wd-save">Cancel</button>&nbsp;
-                <button type="button" id="wd-cancel">Save</button>
-            </div>
+            <table width="100%">
+                <tbody>
+                    <tr>
+                        <td
+                            align="right"
+                            valign="top">
+                            <button type="button" id="wd-save">Cancel</button>&nbsp;
+                            <button type="button" id="wd-cancel">Save</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
 
         </form >
 
