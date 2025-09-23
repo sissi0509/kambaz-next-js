@@ -7,7 +7,8 @@ export default function CourseNavigation() {
             <Link href="/Courses/1234/Piazza" id="wd-course-piazza-link">Piazza</Link><br />
             <Link href="/Courses/1234/Zoom" id="wd-course-zoom-link">Zoom</Link><br />
             <Link href="/Courses/1234/Assignments" id="wd-course-assignments-link">Assignments</Link><br />
-            <Link href="/Courses/1234/Quizzes" id="wd-course-Quizzes-link">Quizze</Link>s<br />
+            <Link href="/Courses/1234/Quizzes" id="wd-course-Quizzes-link">Quizzes</Link>s<br />
+            <Link href="/Courses/1234/Grades" id="wd-course-Quizzes-link">Grades</Link>s<br />
             <Link href="/Courses/1234/People" id="wd-course-People-link">People</Link><br />
         </div>
     );
