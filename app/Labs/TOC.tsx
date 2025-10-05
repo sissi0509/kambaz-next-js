@@ -1,5 +1,4 @@
 import { Nav, NavItem, NavLink } from "react-bootstrap";
-import Link from "next/link";
 export default function TOC() {
   return (
     <Nav variant="pills">
