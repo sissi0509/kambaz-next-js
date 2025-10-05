@@ -10,7 +10,7 @@ export default async function CoursesLayout({
       <h2>Courses {cid}</h2>
       <hr />
       <div className="d-flex">
-        <div className="d-none d-lg-block">
+        <div className="d-none d-lg-block me-5">
           <CourseNavigation cid={cid} />
         </div>
         <div className="flex-fill">{children}</div>

@@ -29,7 +29,7 @@ export default function Assignments() {
                 A1 - ENV + HTML
               </Link>
               <div className="d-flex justify-content-between">
-                <span className="fs-6">
+                <span className="fs-6 me-5">
                   Multiple Modules | <strong>Not available until</strong> May 6
                   at 12:00am |<strong> Due</strong> May 13 at 11:59pm | 100 pts
                 </span>
@@ -48,7 +48,7 @@ export default function Assignments() {
                 A2 - CSS + BOOTSTRAP
               </Link>
               <div className="d-flex justify-content-between">
-                <span className="fs-6">
+                <span className="fs-6 me-5">
                   Multiple Modules | <strong>Not available until</strong> May 13
                   at 12:00am |<strong> Due</strong> May 20 at 11:59pm | 100 pts
                 </span>
@@ -67,7 +67,7 @@ export default function Assignments() {
                 A3 - JAVASCRIPT + REACT
               </Link>
               <div className="d-flex justify-content-between">
-                <span className="fs-6">
+                <span className="fs-6 me-5">
                   Multiple Modules | <strong>Not available until</strong> May 20
                   at 12:00am |<strong> Due</strong> May 27 at 11:59pm | 100 pts
                 </span>
