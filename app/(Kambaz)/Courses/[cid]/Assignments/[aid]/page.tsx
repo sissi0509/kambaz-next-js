@@ -15,7 +15,7 @@ export default function AssignmentEditor() {
 
       <div
         contentEditable="true"
-        className="border rounded-0 mb-3 p-3 bg-white"
+        className="border rounded-0 mb-3 p-3 bg-white form-control"
       >
         The assignment is <span className="text-danger">available online</span>.
         <br />
@@ -178,7 +178,7 @@ export default function AssignmentEditor() {
         <Col sm={8}>
           <div className="border border-light-subtle rounded-0 p-3">
             <Form.Label htmlFor="wd-assign-to" className="fw-bold">
-              Assign Assign to
+              Assign to
             </Form.Label>
 
             <input
@@ -194,9 +194,9 @@ export default function AssignmentEditor() {
                 step="1"
                 defaultValue="2024-05-16T23:59:00"
               />
-              <div className="input-group-text">
+              {/* <div className="input-group-text">
                 <FaRegCalendarAlt className="text-secondary" />
-              </div>
+              </div> */}
             </div>
 
             <Row>
@@ -212,9 +212,9 @@ export default function AssignmentEditor() {
                     id="wd-available-from"
                     defaultValue="2024-05-13T23:59:00"
                   />
-                  <div className="input-group-text">
+                  {/* <div className="input-group-text">
                     <FaRegCalendarAlt className="text-secondary" />
-                  </div>
+                  </div> */}
                 </div>
               </Col>
               <Col sm={6}>
@@ -229,9 +229,9 @@ export default function AssignmentEditor() {
                     id="wd-available-until"
                     defaultValue="2024-05-16T23:59:00"
                   />
-                  <div className="input-group-text">
+                  {/* <div className="input-group-text">
                     <FaRegCalendarAlt className="text-secondary" />
-                  </div>
+                  </div> */}
                 </div>
               </Col>
             </Row>

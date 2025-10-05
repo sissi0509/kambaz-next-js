@@ -50,10 +50,10 @@ body * {
   border-left: 3px solid green !important;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator,
+/* input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   opacity: 0;
   -webkit-appearance: none;
   appearance: none;
   pointer-events: none;
-}
+} */
