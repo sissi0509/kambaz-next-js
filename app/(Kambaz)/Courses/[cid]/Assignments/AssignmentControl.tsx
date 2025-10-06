@@ -26,26 +26,20 @@ export default function AssignmentControls() {
       <div className="d-flex float-end">
         <Button
           id="wd-add-assignment-group "
-          className="me-2"
+          className="me-2 d-flex align-items-center"
           variant="secondary"
           size="lg"
         >
-          <FaPlus
-            className="position-relative me-2"
-            style={{ bottom: "2.5px" }}
-          />
+          <FaPlus className="me-2" />
           Group
         </Button>
         <Button
-          id="wd-add-assignment "
-          className="me-2"
+          id="wd-add-assignment"
+          className="me-2  d-flex align-items-center"
           variant="danger"
           size="lg"
         >
-          <FaPlus
-            className="position-relative me-2"
-            style={{ bottom: "2.5px" }}
-          />
+          <FaPlus className="me-2" />
           Assignment
         </Button>
       </div>

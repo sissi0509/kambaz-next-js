@@ -56,13 +56,10 @@ export default function ModulesControls() {
       <Button
         variant="danger"
         size="lg"
-        className="me-1 "
+        className="me-1 d-flex align-items-center"
         id="wd-add-module-btn"
       >
-        <FaPlus
-          className="position-relative me-2"
-          style={{ bottom: "2.5px" }}
-        />
+        <FaPlus className="me-2" />
         Module
       </Button>
     </div>
