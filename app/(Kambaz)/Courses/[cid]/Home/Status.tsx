@@ -42,7 +42,7 @@ export default function CourseStatus() {
         <BsMegaphone className="me-2 fs-5" /> New Announcement
       </Button>
       <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
-        <BsBarChartLineFill className="me-2 fs-5" /> New Aanlytics
+        <BsBarChartLineFill className="me-2 fs-5" /> New Analytics
       </Button>
       <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
         <CiBellOn className="me-2 fs-5" /> View Course Notifications
