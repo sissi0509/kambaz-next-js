@@ -39,7 +39,12 @@ export default function AssignmentEditor() {
           Points
         </Form.Label>
         <Col sm={8}>
-          <Form.Control id="wd-points" type="number" className="rounded-0" />
+          <Form.Control
+            id="wd-points"
+            type="number"
+            className="rounded-0"
+            defaultValue={100}
+          />
         </Col>
       </Row>
 

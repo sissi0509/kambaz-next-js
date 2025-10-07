@@ -19,7 +19,7 @@ export default function Assignments() {
           <div>
             <BsGripVertical className="me-2" />
             <GoTriangleDown className="me-1" />
-            <span>ASSIGNMENTS</span>
+            <b>ASSIGNMENTS</b>
           </div>
 
           <AssignmentControlButton />
@@ -32,14 +32,15 @@ export default function Assignments() {
             <div className="ms-4 flex-fill">
               <Link
                 href="/Courses/1234/Assignments/1"
-                className="wd-assignment-link text-dark text-decoration-none"
+                className="wd-assignment-link text-dark text-decoration-none "
               >
-                A1
+                <b>A1</b>
               </Link>
               <div className="d-flex justify-content-between">
                 <span className="fs-6 me-5">
-                  Multiple Modules | <strong>Not available until</strong> May 6
-                  at 12:00am |<strong> Due</strong> May 13 at 11:59pm | 100 pts
+                  <span className="text-danger">Multiple Modules </span>|
+                  <strong> Not available until</strong> May 6 at 12:00am |
+                  <strong> Due</strong> May 13 at 11:59pm | 100 pts
                 </span>
                 <LessonControlButtons />
               </div>
@@ -54,12 +55,13 @@ export default function Assignments() {
                 href="/Courses/1234/Assignments/2"
                 className="wd-assignment-link text-dark text-decoration-none"
               >
-                A2
+                <b>A2</b>
               </Link>
               <div className="d-flex justify-content-between">
                 <span className="fs-6 me-5">
-                  Multiple Modules | <strong>Not available until</strong> May 13
-                  at 12:00am |<strong> Due</strong> May 20 at 11:59pm | 100 pts
+                  <span className="text-danger">Multiple Modules </span> |
+                  <strong> Not available until</strong> May 13 at 12:00am |
+                  <strong> Due</strong> May 20 at 11:59pm | 100 pts
                 </span>
                 <LessonControlButtons />
               </div>
@@ -74,12 +76,13 @@ export default function Assignments() {
                 href="/Courses/1234/Assignments/3"
                 className="wd-assignment-link text-dark text-decoration-none"
               >
-                A3
+                <b>A3</b>
               </Link>
               <div className="d-flex justify-content-between">
                 <span className="fs-6 me-5">
-                  Multiple Modules | <strong>Not available until</strong> May 20
-                  at 12:00am |<strong> Due</strong> May 27 at 11:59pm | 100 pts
+                  <span className="text-danger">Multiple Modules </span> |
+                  <strong> Not available until</strong> May 20 at 12:00am |
+                  <strong> Due</strong> May 27 at 11:59pm | 100 pts
                 </span>
                 <LessonControlButtons />
               </div>
