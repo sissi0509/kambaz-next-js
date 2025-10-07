@@ -16,7 +16,7 @@ export default function Dashboard() {
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
       <h2 id="wd-dashboard-published">Published Courses (7)</h2> <hr />
       <div id="wd-dashboard-courses">
-        <Row xs={1} sm={2} md={3} lg={4} xl={5}>
+        <Row xs={1} sm={2} md={3} lg={4} xl={5} className="g-4">
           <Col className="wd-dashboard-course">
             <Card>
               <Link href="/Courses/1234" className="wd-dashboard-course-link">
