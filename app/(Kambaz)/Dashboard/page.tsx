@@ -22,7 +22,7 @@ export default function Dashboard() {
             <Col className="wd-dashboard-course" key={course._id}>
               <Card>
                 <Link
-                  href={`/Courses/${course.number}/Home`}
+                  href={`/Courses/${course._id}/Home`}
                   className="wd-dashboard-course-link"
                 >
                   <CardImg
