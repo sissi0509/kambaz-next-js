@@ -1,5 +1,5 @@
 import Link from "next/link";
-import "../style.css";
+import * as db from "../Database";
 import {
   Row,
   Col,
@@ -11,13 +11,45 @@ import {
   Button,
 } from "react-bootstrap";
 export default function Dashboard() {
+  const courses = db.courses;
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
       <h2 id="wd-dashboard-published">Published Courses (7)</h2> <hr />
       <div id="wd-dashboard-courses">
-        <Row xs={1} sm={2} md={3} lg={4} xl={5} className="g-4">
-          <Col className="wd-dashboard-course">
+        <Row xs={1} md={5} className="g-4">
+          {courses.map((course) => (
+            <Col className="wd-dashboard-course" key={course._id}>
+              <Card>
+                <Link
+                  href={`/Courses/${course.number}/Home`}
+                  className="wd-dashboard-course-link"
+                >
+                  <CardImg
+                    variant="top"
+                    src={`images/${course.image}`}
+                    width="100%"
+                    height={160}
+                    alt=""
+                  />
+                  <CardBody>
+                    <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
+                      {course.name}
+                    </CardTitle>
+                    <CardText
+                      className="wd-dashboard-course-description overflow-hidden"
+                      style={{ height: "100px" }}
+                    >
+                      {course.description}
+                    </CardText>
+                    <Button> Go </Button>
+                  </CardBody>
+                </Link>
+              </Card>
+            </Col>
+          ))}
+
+          {/* <Col className="wd-dashboard-course">
             <Card>
               <Link href="/Courses/1234" className="wd-dashboard-course-link">
                 <CardImg
@@ -198,7 +230,7 @@ export default function Dashboard() {
                 <Button> Go </Button>
               </Link>
             </Card>
-          </Col>
+          </Col> */}
         </Row>
       </div>
     </div>
