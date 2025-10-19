@@ -13,7 +13,7 @@ export default function TOC() {
     {
       href: "https://github.com/sissi0509",
       label: "My GitHub",
-      id: "wd-github-link",
+      id: "wd-github",
     },
   ];
   return (
