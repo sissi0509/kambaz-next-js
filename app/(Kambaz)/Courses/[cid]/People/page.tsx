@@ -1,4 +1,5 @@
-import PeopleTable from "./PeopleTable";
+"use client";
+import PeopleTable from "./Table/page";
 export default function People() {
   return (
     <div>

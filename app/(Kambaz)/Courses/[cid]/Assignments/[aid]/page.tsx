@@ -1,6 +1,12 @@
+"use client";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { assignments } from "../.../../../../../Database";
 
 export default function AssignmentEditor() {
+  const { cid, aid } = useParams();
+  const assignment = assignments.find((a) => a._id === aid);
   return (
     <Form id="wd-assignments-editor" className="p-3">
       <Form.Label className="fs-5" htmlFor="wd-name">
@@ -9,30 +15,15 @@ export default function AssignmentEditor() {
       <Form.Control
         id="wd-name"
         className="mb-3 rounded-0"
-        defaultValue="A1 - ENV + HTML"
+        defaultValue={assignment?.title}
       />
 
-      <div
-        contentEditable="true"
-        className="border rounded-0 mb-3 p-3 bg-white form-control"
-      >
-        The assignment is <span className="text-danger">available online</span>.
-        <br />
-        <br />
-        Submit a link to the landing page of your Web application running on
-        Netlify.
-        <br />
-        <br />
-        The landing page should include:
-        <ul>
-          <li>Your full name and section</li>
-          <li>Links to each of the lab assignments</li>
-          <li>Link to the Kanbas application</li>
-          <li>Links to all relevant source code repositories</li>
-        </ul>
-        The <strong>Kanbas</strong> application should include a link to
-        navigate back.
-      </div>
+      <Form.Control
+        as="textarea"
+        rows={5}
+        defaultValue={assignment?.description ?? ""}
+        placeholder="Enter description here"
+      />
 
       <Row className="mb-3">
         <Form.Label htmlFor="wd-points" column sm="4" className="text-end">
@@ -43,7 +34,7 @@ export default function AssignmentEditor() {
             id="wd-points"
             type="number"
             className="rounded-0"
-            defaultValue={100}
+            defaultValue={assignment?.points ?? 100}
           />
         </Col>
       </Row>
@@ -196,11 +187,8 @@ export default function AssignmentEditor() {
               <Form.Control
                 type="datetime-local"
                 step="1"
-                defaultValue="2024-05-16T23:59:00"
+                defaultValue={assignment?.dueDate}
               />
-              {/* <div className="input-group-text">
-                <FaRegCalendarAlt className="text-secondary" />
-              </div> */}
             </div>
 
             <Row>
@@ -214,11 +202,8 @@ export default function AssignmentEditor() {
                     type="datetime-local"
                     step="1"
                     id="wd-available-from"
-                    defaultValue="2024-05-13T23:59:00"
+                    defaultValue={assignment?.availableDate}
                   />
-                  {/* <div className="input-group-text">
-                    <FaRegCalendarAlt className="text-secondary" />
-                  </div> */}
                 </div>
               </Col>
               <Col sm={6}>
@@ -231,11 +216,8 @@ export default function AssignmentEditor() {
                     type="datetime-local"
                     step="1"
                     id="wd-available-until"
-                    defaultValue="2024-05-16T23:59:00"
+                    defaultValue={assignment?.unitDate}
                   />
-                  {/* <div className="input-group-text">
-                    <FaRegCalendarAlt className="text-secondary" />
-                  </div> */}
                 </div>
               </Col>
             </Row>
@@ -244,13 +226,16 @@ export default function AssignmentEditor() {
       </Row>
       <hr className="" />
       <div className="d-flex justify-content-end">
-        <Button className="me-2" variant="secondary" size="lg" id="wd-save">
-          Cancel
-        </Button>
-
-        <Button className="me-2 " variant="danger" size="lg" id="wd-cancel">
-          Save
-        </Button>
+        <Link href={`/Courses/${cid}/Assignments`}>
+          <Button className="me-2" variant="secondary" size="lg" id="wd-save">
+            Cancel
+          </Button>
+        </Link>
+        <Link href={`/Courses/${cid}/Assignments`}>
+          <Button className="me-2 " variant="danger" size="lg" id="wd-cancel">
+            Save
+          </Button>
+        </Link>
       </div>
     </Form>
   );
