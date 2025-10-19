@@ -16,7 +16,7 @@ export default function Assignments() {
   const dateConvert = (isoString: string) => {
     const date = new Date(isoString);
 
-    const options = {
+    const options: Intl.DateTimeFormatOptions = {
       month: "long",
       day: "numeric",
       hour: "numeric",
