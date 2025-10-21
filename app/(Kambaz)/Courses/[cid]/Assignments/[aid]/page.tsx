@@ -23,6 +23,7 @@ export default function AssignmentEditor() {
         rows={5}
         defaultValue={assignment?.description ?? ""}
         placeholder="Enter description here"
+        className="mb-3 rounded-0"
       />
 
       <Row className="mb-3">
