@@ -8,7 +8,6 @@ export default function MapFunction() {
     <div id="wd-map-function">
       <h4>Map Function</h4>
       squares = {squares} <br />
-      squaresmap = {numberArray1.map((num) => num * num)} <br />
       cubes = {cubes} <br />
       Todos:
       <ol>

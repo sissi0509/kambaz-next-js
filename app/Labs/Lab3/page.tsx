@@ -30,6 +30,7 @@ import Highlight from "./Highlight";
 import PathParameters from "./PathParameters";
 import TodoItem from "./todos/TodoItem";
 import TodoList from "./todos/TodoList";
+import FilterFunction from "./FilterFunction";
 export default function Lab3() {
   console.log("Hello World!");
   return (
@@ -53,6 +54,7 @@ export default function Lab3() {
       <MapFunction />
       <FindFunction />
       <FindIdex />
+      <FilterFunction />
       <JsonStringify />
       <House />
       <Spreading />
@@ -61,7 +63,7 @@ export default function Lab3() {
       <DestructingImports />
       <Classes />
       <Styles />
-      <Add a={3} b={5} />
+      <Add a={3} b={4} />
       <h4>Square of 4</h4>
       <Square>4</Square>
       <hr />
