@@ -7,8 +7,16 @@ import { useState } from "react";
 import * as db from "../../Database";
 import { FormControl } from "react-bootstrap";
 
+type Credentials = {
+  username: string;
+  password: string;
+};
+
 export default function Signin() {
-  const [credentials, setCredentials] = useState<any>({});
+  const [credentials, setCredentials] = useState<Credentials>({
+    username: "",
+    password: "",
+  });
   const dispatch = useDispatch();
   const signin = () => {
     const user = db.users.find(

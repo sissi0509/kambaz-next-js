@@ -15,10 +15,12 @@ import {
   FormControl,
 } from "react-bootstrap";
 import { useState } from "react";
+import * as db from "../Database";
 export default function Dashboard() {
   const courses = useSelector(
     (state: RootState) => state.coursesReducer.courses
   );
+
   const dispatch = useDispatch();
   const [course, setCourse] = useState({
     _id: "0",
@@ -31,6 +33,11 @@ export default function Dashboard() {
     credits: 4,
     description: "New Description",
   });
+
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  );
+  const { enrollments } = db;
 
   return (
     <div id="wd-dashboard">
