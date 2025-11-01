@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { RootState } from "./store";
 
 export default function ArrayStateVariable() {
-  const todos = useSelector((state: any) => state.todoReducer.todos);
+  const todos = useSelector((state: RootState) => state.todoReducer.todos);
   const [array, setArray] = useState([1, 2, 3, 4, 5]);
   const addElement = () => {
     setArray([...array, Math.floor(Math.random() * 100)]);
@@ -35,7 +36,7 @@ export default function ArrayStateVariable() {
       </ul>
       <hr />
       <ListGroup>
-        {todos.map((todo: any) => (
+        {todos.map((todo) => (
           <ListGroupItem key={todo.id}>{todo.title}</ListGroupItem>
         ))}
       </ListGroup>

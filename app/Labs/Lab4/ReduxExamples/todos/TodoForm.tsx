@@ -2,9 +2,10 @@ import React from "react";
 import { Button, FormControl, ListGroupItem } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, updateTodo, setTodo } from "./todosReducer";
+import { RootState } from "../../store";
 
 export default function TodoForm() {
-  const todo = useSelector((state: any) => state.todoReducer.todo);
+  const todo = useSelector((state: RootState) => state.todoReducer.todo);
   const dispatch = useDispatch();
   return (
     <ListGroupItem className="d-flex justify-content-between">
