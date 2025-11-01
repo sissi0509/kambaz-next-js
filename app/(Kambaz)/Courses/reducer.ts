@@ -10,17 +10,15 @@ const coursesSlice = createSlice({
   reducers: {
     addNewCourse: (state, { payload: course }) => {
       const newCourse = { ...course, _id: uuidv4() };
-      state.courses = [...state.courses, newCourse] as any;
+      state.courses = [...state.courses, newCourse];
     },
     deleteCourse: (state, { payload: courseId }) => {
-      state.courses = state.courses.filter(
-        (course: any) => course._id !== courseId
-      );
+      state.courses = state.courses.filter((course) => course._id !== courseId);
     },
     updateCourse: (state, { payload: course }) => {
-      state.courses = state.courses.map((c: any) =>
+      state.courses = state.courses.map((c) =>
         c._id === course._id ? course : c
-      ) as any;
+      );
     },
   },
 });

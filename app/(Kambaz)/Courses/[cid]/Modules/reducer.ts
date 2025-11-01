@@ -24,10 +24,7 @@ const modulesSlice = createSlice({
   name: "modules",
   initialState,
   reducers: {
-    addModule: (
-      state,
-      { payload: module }: PayloadAction<{ name: string; course: string }>
-    ) => {
+    addModule: (state, { payload: module }) => {
       const newModule: Module = {
         _id: uuidv4(),
         lessons: [],

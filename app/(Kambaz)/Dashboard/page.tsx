@@ -16,9 +16,11 @@ import {
 } from "react-bootstrap";
 import { useState } from "react";
 export default function Dashboard() {
-  const courses = useSelector((state: RootState) => state.coursesReducer.courses);
+  const courses = useSelector(
+    (state: RootState) => state.coursesReducer.courses
+  );
   const dispatch = useDispatch();
-  const [course, setCourse] = useState<any>({
+  const [course, setCourse] = useState({
     _id: "0",
     name: "New Course",
     number: "New Number",
