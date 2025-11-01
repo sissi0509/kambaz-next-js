@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 export default function CoursesLayout({ children }: { children: ReactNode }) {
-  const { cid } = useParams();
+  const { cid } = useParams<{ cid: string }>();
   const { courses } = useSelector((state: RootState) => state.coursesReducer);
 
   const course = courses.find((c) => c._id === cid);
