@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { modules } from "../../../Database";
 import { v4 as uuidv4 } from "uuid";
-import { PayloadAction } from "@reduxjs/toolkit";
 
 export interface Lesson {
   _id: string;
@@ -15,6 +14,7 @@ export interface Module {
   course: string;
   lessons: Lesson[];
   editing?: boolean;
+  description: string;
 }
 
 const initialState = {
@@ -30,6 +30,7 @@ const modulesSlice = createSlice({
         lessons: [],
         name: module.name,
         course: module.course,
+        description: "",
       };
       state.modules.push(newModule);
     },
