@@ -293,7 +293,6 @@ export default function Lab1() {
             type="range"
             defaultValue={4}
             max="5"
-            placeholder="Doe"
             id="wd-text-fields-rating"
           />
           <br />
@@ -305,24 +304,14 @@ export default function Lab1() {
           />
           <br />
           <h4>Anchor tag</h4>
-          Please
+          Please&nbsp;
           <a href="https://www.lipsum.com" id="wd-lipsum">
-            {" "}
-            click here{" "}
+            click here
           </a>
-          to get dummy text
+          &nbsp;to get dummy text
           <br />
-          Please
         </form>
       </div>
-      <label htmlFor="last">Last name</label>
-      <input
-        defaultValue="Brown"
-        placeholder="Lee"
-        id="last"
-        title="Last Name"
-        name="Type your last name"
-      />
     </div>
   );
 }

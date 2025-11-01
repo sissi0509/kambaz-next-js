@@ -1,146 +1,88 @@
 "use client";
-import { ListGroup, ListGroupItem } from "react-bootstrap";
+import { FormControl, ListGroup, ListGroupItem } from "react-bootstrap";
 import ModulesControls from "./ModulesControls";
 import LessonControlButtons from "./LessonControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import { BsGripVertical } from "react-icons/bs";
-import * as db from "../../../Database";
 import { useParams } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
+import { addModule, editModule, updateModule, deleteModule } from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../store";
 
 export default function Modules() {
   const { cid } = useParams();
-  const courseModule = db.modules.filter((m) => m.course === cid);
+  const [moduleName, setModuleName] = useState("");
+  const { modules } = useSelector((state: RootState) => state.modulesReducer);
+  const dispatch = useDispatch();
 
   return (
     <div>
       <div className="mb-5">
-        <ModulesControls />
+        <ModulesControls
+          setModuleName={setModuleName}
+          moduleName={moduleName}
+          addModule={() => {
+            dispatch(addModule({ name: moduleName, course: cid }));
+          }}
+        />
       </div>
 
       <ListGroup className="rounded-0" id="wd-modules">
-        {courseModule.map((m, i) => (
-          <ListGroupItem
-            key={i}
-            className="wd-module p-0 mb-5 fs-5 border-gray "
-          >
-            <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between ">
-              <div>
-                <BsGripVertical className="me-2" />
-                {m.name}
+        {modules
+          .filter((module: any) => module.course === cid)
+          .map((m, i) => (
+            <ListGroupItem
+              key={i}
+              className="wd-module p-0 mb-5 fs-5 border-gray "
+            >
+              <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between ">
+                <div>
+                  <BsGripVertical className="me-2" />
+                  {!m.editing && m.name}
+                  {m.editing && (
+                    <FormControl
+                      className="w-75 d-inline-block"
+                      onChange={(e) =>
+                        dispatch(updateModule({ ...m, name: e.target.value }))
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          dispatch(updateModule({ ...m, editing: false }));
+                        }
+                      }}
+                      defaultValue={m.name}
+                    />
+                  )}
+                </div>
+                <ModuleControlButtons
+                  moduleId={m._id}
+                  deleteModule={(moduleId) => {
+                    dispatch(deleteModule(moduleId));
+                  }}
+                  editModule={(moduleId) => dispatch(editModule(moduleId))}
+                />
               </div>
-
-              <ModuleControlButtons />
-            </div>
-            {m.lessons && (
-              <ListGroup className="wd-lessons rounded-0">
-                {m.lessons.map((lesson, j) => (
-                  <ListGroupItem
-                    key={j}
-                    className="wd-lesson p-3 ps-1 d-flex justify-content-between"
-                  >
-                    <div>
-                      <BsGripVertical className="me-2" />
-                      {lesson.name}
-                    </div>
-                    <LessonControlButtons />
-                  </ListGroupItem>
-                ))}
-              </ListGroup>
-            )}
-          </ListGroupItem>
-        ))}
+              {m.lessons && (
+                <ListGroup className="wd-lessons rounded-0">
+                  {m.lessons.map((lesson, j) => (
+                    <ListGroupItem
+                      key={j}
+                      className="wd-lesson p-3 ps-1 d-flex justify-content-between"
+                    >
+                      <div>
+                        <BsGripVertical className="me-2" />
+                        {lesson.name}
+                      </div>
+                      <LessonControlButtons />
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
+              )}
+            </ListGroupItem>
+          ))}
       </ListGroup>
-      {/* 
-      //   <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray ">
-      //     <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between ">
-      //       <div>
-      //         <BsGripVertical className="me-2" />
-
-      //         <span>Week 1</span>
-      //       </div>
-
-      //       <ModuleControlButtons />
-      //     </div>
-      //     <ListGroup className="wd-lessons rounded-0">
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-      //           <span>LEARNING OBJECTIVES</span>
-      //         </div>
-
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-
-      //           <span>Introduction to the course</span>
-      //         </div>
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-
-      //           <span>Learn what is Web Development</span>
-      //         </div>
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-
-      //           <span>LESSON 1</span>
-      //         </div>
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-
-      //           <span>LESSON 2</span>
-      //         </div>
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //     </ListGroup>
-      //   </ListGroupItem>
-      //   <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
-      //     <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between">
-      //       <div>
-      //         <BsGripVertical className="me-2" />
-
-      //         <span>Week 2</span>
-      //       </div>
-      //       <ModuleControlButtons />
-      //     </div>
-      //     <ListGroup className="wd-lessons rounded-0">
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-
-      //           <span>LEARNING OBJECTIVES</span>
-      //         </div>
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-
-      //           <span>LESSON 1</span>
-      //         </div>
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //       <ListGroupItem className="wd-lesson p-3 ps-1 d-flex justify-content-between">
-      //         <div>
-      //           <BsGripVertical className="me-2" />
-
-      //           <span>LESSON 2</span>
-      //         </div>
-      //         <LessonControlButtons />
-      //       </ListGroupItem>
-      //     </ListGroup>
-      //   </ListGroupItem>
-      // </ListGroup> */}
     </div>
   );
 }

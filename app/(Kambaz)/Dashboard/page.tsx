@@ -1,5 +1,8 @@
+"use client";
 import Link from "next/link";
-import * as db from "../Database";
+import { RootState } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewCourse, deleteCourse, updateCourse } from "../Courses/reducer";
 import {
   Row,
   Col,
@@ -9,15 +12,58 @@ import {
   CardText,
   CardTitle,
   Button,
+  FormControl,
 } from "react-bootstrap";
+import { useState } from "react";
 export default function Dashboard() {
-  const courses = db.courses;
+  const courses = useSelector((state: RootState) => state.coursesReducer.courses);
+  const dispatch = useDispatch();
+  const [course, setCourse] = useState<any>({
+    _id: "0",
+    name: "New Course",
+    number: "New Number",
+    startDate: "2023-09-10",
+    endDate: "2023-12-15",
+    image: "reactjs.jpg",
+    department: "D123",
+    credits: 4,
+    description: "New Description",
+  });
+
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-      <h2 id="wd-dashboard-published">
-        Published Courses ({courses.length})
-      </h2>{" "}
+      <h5>
+        New Course
+        <button
+          className="btn btn-primary float-end"
+          id="wd-add-new-course-click"
+          onClick={() => dispatch(addNewCourse(course))}
+        >
+          Add
+        </button>
+        <button
+          className="btn btn-warning float-end me-2"
+          onClick={() => dispatch(updateCourse(course))}
+          id="wd-update-course-click"
+        >
+          Update{" "}
+        </button>
+      </h5>
+      <FormControl
+        value={course.name}
+        className="mb-2"
+        onChange={(e) => setCourse({ ...course, name: e.target.value })}
+      />
+      <FormControl
+        as="textarea"
+        value={course.description}
+        rows={3}
+        onChange={(e) => setCourse({ ...course, description: e.target.value })}
+      />
+      <hr />
+      <hr />
+      <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
@@ -45,195 +91,34 @@ export default function Dashboard() {
                     >
                       {course.description}
                     </CardText>
-                    <Button> Go </Button>
+                    <div className="d-flex justify-content-between">
+                      <Button> Go </Button>
+                      <div>
+                        <Button
+                          className="btn btn-warning me-1"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCourse(course);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          className="btn btn-danger "
+                          onClick={(event) => {
+                            event.preventDefault();
+                            dispatch(deleteCourse(course._id));
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
                   </CardBody>
                 </Link>
               </Card>
             </Col>
           ))}
-
-          {/* <Col className="wd-dashboard-course">
-            <Card>
-              <Link href="/Courses/1234" className="wd-dashboard-course-link">
-                <CardImg
-                  variant="top"
-                  src="/images/reactjs.jpg"
-                  width="100%"
-                  height={160}
-                  alt=""
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS1234 React JS
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Full Stack software developer
-                  </CardText>
-                </CardBody>
-
-                <Button> Go </Button>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course">
-            <Card>
-              <Link href="/Courses/5001" className="wd-dashboard-course-link">
-                <CardImg
-                  variant="top"
-                  src="/images/5001.jpg"
-                  width="100%"
-                  height={160}
-                  alt=""
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS5001 Foundation of Computer Science
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Beginner to computer science
-                  </CardText>
-                </CardBody>
-
-                <Button> Go </Button>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course">
-            <Card>
-              <Link href="/Courses/5002" className="wd-dashboard-course-link">
-                <CardImg
-                  variant="top"
-                  src="/images/5002.jpg"
-                  width="100%"
-                  height={160}
-                  alt=""
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS5002 Discrete Structure
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Beginner to Discrete Structure
-                  </CardText>
-                </CardBody>
-
-                <Button> Go </Button>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course">
-            <Card>
-              <Link href="/Courses/5002" className="wd-dashboard-course-link">
-                <CardImg
-                  variant="top"
-                  src="/images/5002.jpg"
-                  width="100%"
-                  height={160}
-                  alt=""
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS5002 Discrete Structure
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Beginner to Discrete Structure
-                  </CardText>
-                </CardBody>
-
-                <Button> Go </Button>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course">
-            <Card>
-              <Link href="/Courses/5004" className="wd-dashboard-course-link">
-                <CardImg
-                  variant="top"
-                  src="/images/5004.jpg"
-                  width="100%"
-                  height={160}
-                  alt=""
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS5004 Object Oriented Design
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Beginner to Object Oriented Design
-                  </CardText>
-                </CardBody>
-
-                <Button> Go </Button>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course">
-            <Card>
-              <Link href="/Courses/5008" className="wd-dashboard-course-link">
-                <CardImg
-                  variant="top"
-                  src="/images/5008.jpg"
-                  width="100%"
-                  height={160}
-                  alt=""
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS5008 Data Structure
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Beginner to Data Structure
-                  </CardText>
-                </CardBody>
-
-                <Button> Go </Button>
-              </Link>
-            </Card>
-          </Col>
-          <Col className="wd-dashboard-course">
-            <Card>
-              <Link href="/Courses/5800" className="wd-dashboard-course-link">
-                <CardImg
-                  variant="top"
-                  src="/images/5800.jpg"
-                  width="100%"
-                  height={160}
-                  alt=""
-                />
-                <CardBody>
-                  <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                    CS800 Algorithm
-                  </CardTitle>
-                  <CardText
-                    className="wd-dashboard-course-description overflow-hidden"
-                    style={{ height: "100px" }}
-                  >
-                    Beginner to Algorithm
-                  </CardText>
-                </CardBody>
-
-                <Button> Go </Button>
-              </Link>
-            </Card>
-          </Col> */}
         </Row>
       </div>
     </div>
