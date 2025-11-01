@@ -12,7 +12,7 @@ import { RootState } from "../../../store";
 import type { Module } from "./reducer";
 
 export default function Modules() {
-  const { cid } = useParams();
+  const { cid } = useParams<{ cid: string }>();
   const [moduleName, setModuleName] = useState("");
   const modules = useSelector<RootState, Module[]>(
     (state) => state.modulesReducer.modules
