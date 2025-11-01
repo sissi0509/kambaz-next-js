@@ -5,7 +5,6 @@ import LessonControlButtons from "./LessonControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import { BsGripVertical } from "react-icons/bs";
 import { useParams } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { addModule, editModule, updateModule, deleteModule } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,7 +30,7 @@ export default function Modules() {
 
       <ListGroup className="rounded-0" id="wd-modules">
         {modules
-          .filter((module: any) => module.course === cid)
+          .filter((module) => module.course === cid)
           .map((m, i) => (
             <ListGroupItem
               key={i}
