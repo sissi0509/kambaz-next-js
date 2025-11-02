@@ -6,7 +6,7 @@ export interface User {
   lastName: string;
   email: string;
   dob: string;
-  role: "FACULTY" | "STUDENT" | "ADMIN";
+  role: "FACULTY" | "STUDENT" | "ADMIN" | "ADMIN";
   loginId: string;
   section: string;
   lastActivity: string;

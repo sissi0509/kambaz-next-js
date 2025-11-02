@@ -16,6 +16,8 @@ import {
 } from "react-bootstrap";
 import { useState } from "react";
 import * as db from "../Database";
+import { redirect } from "next/navigation";
+
 export default function Dashboard() {
   const courses = useSelector(
     (state: RootState) => state.coursesReducer.courses
@@ -39,17 +41,18 @@ export default function Dashboard() {
   );
 
   if (!currentUser) {
-    return (
-      <div id="wd-dashboard">
-        <h1 id="wd-dashboard-title">Dashboard</h1>
-        <hr />
-        You’re not signed in.
-        <Link href="/Account/Signin" className="danger">
-          &nbsp;Sign in&nbsp;
-        </Link>
-        to view your courses.
-      </div>
-    );
+    return redirect("/Account/Signin");
+    // return (
+    //   <div id="wd-dashboard">
+    //     <h1 id="wd-dashboard-title">Dashboard</h1>
+    //     <hr />
+    //     You’re not signed in.
+    //     <Link href="/Account/Signin" className="danger">
+    //       &nbsp;Sign in&nbsp;
+    //     </Link>
+    //     to view your courses.
+    //   </div>
+    // );
   }
 
   const { enrollments } = db;
