@@ -37,6 +37,21 @@ export default function Dashboard() {
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
   );
+
+  if (!currentUser) {
+    return (
+      <div id="wd-dashboard">
+        <h1 id="wd-dashboard-title">Dashboard</h1>
+        <hr />
+        You’re not signed in.
+        <Link href="/Account/Signin" className="danger">
+          &nbsp;Sign in&nbsp;
+        </Link>
+        to view your courses.
+      </div>
+    );
+  }
+
   const { enrollments } = db;
 
   return (
@@ -56,7 +71,7 @@ export default function Dashboard() {
           onClick={() => dispatch(updateCourse(course))}
           id="wd-update-course-click"
         >
-          Update{" "}
+          Update
         </button>
       </h5>
       <FormControl
@@ -76,58 +91,66 @@ export default function Dashboard() {
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {courses.map((course) => (
-            <Col className="wd-dashboard-course" key={course._id}>
-              <Card>
-                <Link
-                  href={`/Courses/${course._id}/Home`}
-                  className="wd-dashboard-course-link text-decoration-none text-dark"
-                >
-                  <CardImg
-                    variant="top"
-                    src={`images/${course.image}`}
-                    width="100%"
-                    height={160}
-                    alt=""
-                  />
-                  <CardBody>
-                    <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                      {course.name}
-                    </CardTitle>
-                    <CardText
-                      className="wd-dashboard-course-description overflow-hidden"
-                      style={{ height: "100px" }}
-                    >
-                      {course.description}
-                    </CardText>
-                    <div className="d-flex justify-content-between">
-                      <Button> Go </Button>
-                      <div>
-                        <Button
-                          className="btn btn-warning me-1"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setCourse(course);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          className="btn btn-danger "
-                          onClick={(event) => {
-                            event.preventDefault();
-                            dispatch(deleteCourse(course._id));
-                          }}
-                        >
-                          Delete
-                        </Button>
+          {courses
+            .filter((course) =>
+              enrollments.some(
+                (enrollment) =>
+                  enrollment.user === currentUser._id &&
+                  enrollment.course === course._id
+              )
+            )
+            .map((course) => (
+              <Col className="wd-dashboard-course" key={course._id}>
+                <Card>
+                  <Link
+                    href={`/Courses/${course._id}/Home`}
+                    className="wd-dashboard-course-link text-decoration-none text-dark"
+                  >
+                    <CardImg
+                      variant="top"
+                      src={`images/${course.image}`}
+                      width="100%"
+                      height={160}
+                      alt=""
+                    />
+                    <CardBody>
+                      <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
+                        {course.name}
+                      </CardTitle>
+                      <CardText
+                        className="wd-dashboard-course-description overflow-hidden"
+                        style={{ height: "100px" }}
+                      >
+                        {course.description}
+                      </CardText>
+                      <div className="d-flex justify-content-between">
+                        <Button> Go </Button>
+                        <div>
+                          <Button
+                            className="btn btn-warning me-1"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setCourse(course);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            className="btn btn-danger "
+                            onClick={(event) => {
+                              event.preventDefault();
+                              dispatch(deleteCourse(course._id));
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </CardBody>
-                </Link>
-              </Card>
-            </Col>
-          ))}
+                    </CardBody>
+                  </Link>
+                </Card>
+              </Col>
+            ))}
         </Row>
       </div>
     </div>
