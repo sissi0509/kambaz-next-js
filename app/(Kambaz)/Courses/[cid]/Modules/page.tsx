@@ -9,13 +9,13 @@ import { useState } from "react";
 import { addModule, editModule, updateModule, deleteModule } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
-import type { Module } from "./reducer";
+import type { Module } from "./type";
 
 export default function Modules() {
   const { cid } = useParams<{ cid: string }>();
   const [moduleName, setModuleName] = useState("");
   const modules = useSelector<RootState, Module[]>(
-    (state) => state.modulesReducer.modules
+    (state: RootState) => state.modulesReducer.modules
   );
   const dispatch = useDispatch();
 
