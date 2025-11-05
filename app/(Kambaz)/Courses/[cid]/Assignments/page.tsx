@@ -1,18 +1,40 @@
 "use client";
 import Link from "next/link";
 import AssignmentControl from "./AssignmentControl";
-import { ListGroup, ListGroupItem } from "react-bootstrap";
+import { Button, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 import LessonControlButtons from "../Modules/LessonControlButtons";
 import AssignmentControlButton from "./AssignmentControlButton";
 import { LuNotebookPen } from "react-icons/lu";
 import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
-import * as db from "../../../Database";
+import { RootState } from "../../../store";
 import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAssignment } from "./reducer";
+import { FaTrash } from "react-icons/fa6";
+import { useState } from "react";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const assignments = db.assignments.filter((a) => a.course === cid);
+  const assignments: any = useSelector((state: RootState) =>
+    state.assignmentsReducer.assignments.filter((a: any) => a.course === cid)
+  );
+  const dispatch = useDispatch();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const handleDelete = (id: string) => {
+    setDeleteId(id);
+  };
+  const handleConfirmDelete = () => {
+    if (deleteId) {
+      dispatch(deleteAssignment(deleteId));
+    }
+    setDeleteId(null);
+  };
+  const handleCancel = () => {
+    setDeleteId(null);
+  };
+
   const dateConvert = (isoString: string) => {
     const date = new Date(isoString);
 
@@ -33,6 +55,7 @@ export default function Assignments() {
 
   return (
     <div id="wd-assignments">
+      <></>
       <div className="mb-5">
         <AssignmentControl />
       </div>
@@ -61,7 +84,7 @@ export default function Assignments() {
                     href={`/Courses/${cid}/Assignments/${a._id}`}
                     className="wd-assignment-link text-dark text-decoration-none "
                   >
-                    <b>{`${a.number} ${a.title}`}</b>
+                    <b>{`${a.title}`}</b>
                   </Link>
                   <div className="d-flex justify-content-between">
                     <span className="fs-6 me-5">
@@ -70,7 +93,32 @@ export default function Assignments() {
                       {dateConvert(a.availableDate)} |<strong> Due</strong>{" "}
                       {dateConvert(a.dueDate)} | {a.points} pts
                     </span>
-                    <LessonControlButtons />
+                    <div className="d-flex">
+                      <FaTrash
+                        className="text-danger me-2 mb-1"
+                        onClick={() => handleDelete(a._id)}
+                      />
+                      <Modal show={deleteId !== null} onHide={handleCancel}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Delete Assignment</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          Are you sure you want to delete this assignment?
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button
+                            variant="secondary"
+                            onClick={handleConfirmDelete}
+                          >
+                            Yes
+                          </Button>
+                          <Button variant="primary" onClick={handleCancel}>
+                            No
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                      <LessonControlButtons />
+                    </div>
                   </div>
                 </div>
               </ListGroupItem>
