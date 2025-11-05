@@ -72,7 +72,7 @@ export default function Assignments() {
 
         {assignments.length > 0 && (
           <ListGroup id="wd-assignment-list" className="rounded-0">
-            {assignments.map((a, i) => (
+            {assignments.map((a: any, i: number) => (
               <ListGroupItem
                 key={i}
                 className="wd-assignment-list-item d-flex align-items-center"
