@@ -62,6 +62,7 @@ export default function Dashboard() {
   if (!currentUser) {
     return redirect("/Account/Signin");
   }
+
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">
@@ -121,7 +122,11 @@ export default function Dashboard() {
             <Col className="wd-dashboard-course" key={course._id}>
               <Card>
                 <Link
-                  href={`/Courses/${course._id}/Home`}
+                  href={
+                    isEnrolled(course._id)
+                      ? `/Courses/${course._id}/Home`
+                      : "/Dashboard"
+                  }
                   className="wd-dashboard-course-link text-decoration-none text-dark"
                 >
                   <CardImg
@@ -142,11 +147,11 @@ export default function Dashboard() {
                       {course.description}
                     </CardText>
                     <div className="d-flex justify-content-between">
-                      <Button> Go </Button>
+                      <Button className="btn-sm"> Go </Button>
                       {isFaculty && (
                         <div>
                           <Button
-                            className="btn btn-warning me-1"
+                            className="btn btn-sm btn-warning me-1"
                             onClick={(e) => {
                               e.preventDefault();
                               setCourse(course);
@@ -155,7 +160,7 @@ export default function Dashboard() {
                             Edit
                           </Button>
                           <Button
-                            className="btn btn-danger "
+                            className="btn btn-sm btn-danger "
                             onClick={(event) => {
                               event.preventDefault();
                               dispatch(deleteCourse(course._id));
@@ -165,39 +170,39 @@ export default function Dashboard() {
                           </Button>
                         </div>
                       )}
-                      <div>
-                        {isEnrolled(course._id) ? (
-                          <Button
-                            className="btn btn-danger me-1"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              dispatch(
-                                unenroll({
-                                  user: currentUser!._id,
-                                  course: course._id,
-                                })
-                              );
-                            }}
-                          >
-                            {"Unenroll"}
-                          </Button>
-                        ) : (
-                          <Button
-                            className="btn btn-success me-1"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              dispatch(
-                                enroll({
-                                  user: currentUser!._id,
-                                  course: course._id,
-                                })
-                              );
-                            }}
-                          >
-                            {"Enroll"}
-                          </Button>
-                        )}
-                      </div>
+                    </div>
+                    <div>
+                      {isEnrolled(course._id) ? (
+                        <Button
+                          className="btn btn-sm btn-danger mt-1 me-1"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(
+                              unenroll({
+                                user: currentUser!._id,
+                                course: course._id,
+                              })
+                            );
+                          }}
+                        >
+                          {"Unenroll"}
+                        </Button>
+                      ) : (
+                        <Button
+                          className="btn btn-sm btn-success mt-1 me-1"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            dispatch(
+                              enroll({
+                                user: currentUser!._id,
+                                course: course._id,
+                              })
+                            );
+                          }}
+                        >
+                          {"Enroll"}
+                        </Button>
+                      )}
                     </div>
                   </CardBody>
                 </Link>

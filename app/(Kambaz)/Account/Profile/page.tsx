@@ -6,9 +6,11 @@ import { setCurrentUser } from "../reducer";
 import { RootState } from "../../store";
 import Link from "next/link";
 import type { User, Role } from "../type";
+import { useRouter } from "next/navigation";
 export default function Profile() {
   const [profile, setProfile] = useState<User | null>(null);
   const dispatch = useDispatch();
+  const router = useRouter();
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
   );
@@ -18,8 +20,10 @@ export default function Profile() {
   };
   const signout = () => {
     dispatch(setCurrentUser(null));
-    redirect("/Account/Signin");
+    // redirect("/Account/Signin");
+    router.push("/Signin");
   };
+
   useEffect(() => {
     fetchProfile();
   }, []);

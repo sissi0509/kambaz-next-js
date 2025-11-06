@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { redirect } from "next/dist/client/components/navigation";
+import { useRouter } from "next/navigation";
 import { setCurrentUser } from "../reducer";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -17,7 +17,10 @@ export default function Signin() {
     username: "",
     password: "",
   });
+
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const signin = () => {
     const user = db.users.find(
       (u) =>
@@ -26,7 +29,8 @@ export default function Signin() {
     );
     if (!user) return;
     dispatch(setCurrentUser(user));
-    redirect("/Dashboard");
+    // redirect("/Dashboard");
+    router.push("/Dashboard");
   };
 
   return (
