@@ -16,8 +16,7 @@ export default function CoursesLayout({ children }: { children: ReactNode }) {
 
   return (
     <div id="wd-courses">
-      <h2 className="text-danger ">
-        {/* "d-none d-lg-block" */}
+      <h2 className="text-danger d-none d-lg-block">
         <FaAlignJustify
           className="me-4 fs-4 mb-1 "
           onClick={() => setShowNav(!showNav)}
@@ -29,7 +28,7 @@ export default function CoursesLayout({ children }: { children: ReactNode }) {
       <hr />
       <div className="d-flex">
         {showNav && (
-          <div className="me-5">
+          <div className="d-none d-lg-block me-5">
             <CourseNavigation cid={cid} />
           </div>
         )}
