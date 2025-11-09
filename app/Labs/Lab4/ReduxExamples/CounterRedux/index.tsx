@@ -13,6 +13,7 @@ export default function CounterRedux() {
       <h3>{count}</h3>
       <button onClick={() => dispatch(increment())}>Increment</button>
       <button onClick={() => dispatch(decrement())}>Decrement</button>
+      <hr />
     </div>
   );
 }
