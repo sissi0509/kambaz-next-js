@@ -34,7 +34,6 @@ export default function ArrayStateVariable() {
           </li>
         ))}
       </ul>
-      <hr />
       <ListGroup>
         {todos.map((todo) => (
           <ListGroupItem key={todo.id}>{todo.title}</ListGroupItem>
