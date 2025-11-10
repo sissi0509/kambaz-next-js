@@ -17,6 +17,13 @@ export default function Modules() {
   const modules = useSelector<RootState, Module[]>(
     (state: RootState) => state.modulesReducer.modules
   );
+
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  );
+
+  const isFaculty = currentUser?.role === "FACULTY";
+
   const dispatch = useDispatch();
 
   return (
@@ -43,7 +50,7 @@ export default function Modules() {
                 <div>
                   <BsGripVertical className="me-2" />
                   {!m.editing && m.name}
-                  {m.editing && (
+                  {m.editing && isFaculty && (
                     <FormControl
                       className="w-75 d-inline-block"
                       onChange={(e) =>
@@ -58,13 +65,15 @@ export default function Modules() {
                     />
                   )}
                 </div>
-                <ModuleControlButtons
-                  moduleId={m._id}
-                  deleteModule={(moduleId) => {
-                    dispatch(deleteModule(moduleId));
-                  }}
-                  editModule={(moduleId) => dispatch(editModule(moduleId))}
-                />
+                {isFaculty && (
+                  <ModuleControlButtons
+                    moduleId={m._id}
+                    deleteModule={(moduleId) => {
+                      dispatch(deleteModule(moduleId));
+                    }}
+                    editModule={(moduleId) => dispatch(editModule(moduleId))}
+                  />
+                )}
               </div>
               {m.lessons && (
                 <ListGroup className="wd-lessons rounded-0">

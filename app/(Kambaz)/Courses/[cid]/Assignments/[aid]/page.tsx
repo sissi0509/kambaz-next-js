@@ -12,6 +12,10 @@ export default function AssignmentEditor() {
   const assignments: any = useSelector(
     (state: RootState) => state.assignmentsReducer.assignments
   );
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  );
+
   const dispatch = useDispatch();
 
   const existing = assignments.find((a: any) => a._id === aid);
@@ -55,6 +59,31 @@ export default function AssignmentEditor() {
       );
     }
   };
+  const isFaculty = currentUser?.role === "FACULTY";
+  if (!isFaculty) {
+    return (
+      <div className="p-3">
+        <h3>{title}</h3>
+        {description && <p>{description}</p>}
+        <p>
+          <b>Points:</b> {points}
+        </p>
+        <p>
+          <b>Due:</b> {dueDate.slice(0, 10)}
+        </p>
+        <p>
+          <b>Available from:</b> {availableDate.slice(0, 10)}
+        </p>
+        <p>
+          <b>Until:</b> {untilDate.slice(0, 10)}
+        </p>
+        <Link href={`/Courses/${cid}/Assignments`}>
+          <Button variant="secondary">Back</Button>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <Form id="wd-assignments-editor" className="p-3">
       <Form.Label className="fs-5" htmlFor="wd-name">

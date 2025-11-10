@@ -19,6 +19,12 @@ export default function Assignments() {
   const assignments: any = useSelector((state: RootState) =>
     state.assignmentsReducer.assignments.filter((a: any) => a.course === cid)
   );
+  const { currentUser } = useSelector(
+    (state: RootState) => state.accountReducer
+  );
+
+  const isFaculty = currentUser?.role === "FACULTY";
+
   const dispatch = useDispatch();
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -55,7 +61,6 @@ export default function Assignments() {
 
   return (
     <div id="wd-assignments">
-      <></>
       <div className="mb-5">
         <AssignmentControl />
       </div>
@@ -94,10 +99,12 @@ export default function Assignments() {
                       {dateConvert(a.dueDate)} | {a.points} pts
                     </span>
                     <div className="d-flex">
-                      <FaTrash
-                        className="text-danger me-2 mb-1"
-                        onClick={() => handleDelete(a._id)}
-                      />
+                      {isFaculty && (
+                        <FaTrash
+                          className="text-danger me-2 mb-1"
+                          onClick={() => handleDelete(a._id)}
+                        />
+                      )}
                       <Modal show={deleteId !== null} onHide={handleCancel}>
                         <Modal.Header closeButton>
                           <Modal.Title>Delete Assignment</Modal.Title>
