@@ -15,7 +15,7 @@ import {
   Button,
   FormControl,
 } from "react-bootstrap";
-import { use, useState } from "react";
+import { useState } from "react";
 import { redirect } from "next/navigation";
 
 export default function Dashboard() {
@@ -147,8 +147,8 @@ export default function Dashboard() {
                       {course.description}
                     </CardText>
                     <div className="d-flex justify-content-between">
-                      <Button className="btn-sm"> Go </Button>
-                      {isFaculty && (
+                      {!showAll && <Button className="btn-sm"> Go </Button>}
+                      {isFaculty && !showAll && (
                         <div>
                           <Button
                             className="btn btn-sm btn-warning me-1"
@@ -171,39 +171,41 @@ export default function Dashboard() {
                         </div>
                       )}
                     </div>
-                    <div>
-                      {isEnrolled(course._id) ? (
-                        <Button
-                          className="btn btn-sm btn-danger mt-1 me-1"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            dispatch(
-                              unenroll({
-                                user: currentUser!._id,
-                                course: course._id,
-                              })
-                            );
-                          }}
-                        >
-                          {"Unenroll"}
-                        </Button>
-                      ) : (
-                        <Button
-                          className="btn btn-sm btn-success mt-1 me-1"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            dispatch(
-                              enroll({
-                                user: currentUser!._id,
-                                course: course._id,
-                              })
-                            );
-                          }}
-                        >
-                          {"Enroll"}
-                        </Button>
-                      )}
-                    </div>
+                    {showAll && (
+                      <div>
+                        {isEnrolled(course._id) ? (
+                          <Button
+                            className="btn btn-sm btn-danger mt-1 me-1"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              dispatch(
+                                unenroll({
+                                  user: currentUser!._id,
+                                  course: course._id,
+                                })
+                              );
+                            }}
+                          >
+                            {"Unenroll"}
+                          </Button>
+                        ) : (
+                          <Button
+                            className="btn btn-sm btn-success mt-1 me-1"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              dispatch(
+                                enroll({
+                                  user: currentUser!._id,
+                                  course: course._id,
+                                })
+                              );
+                            }}
+                          >
+                            {"Enroll"}
+                          </Button>
+                        )}
+                      </div>
+                    )}
                   </CardBody>
                 </Link>
               </Card>
