@@ -4,24 +4,27 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
 import { RootState } from "../../store";
-import Link from "next/link";
 import type { User, Role } from "../type";
-import { useRouter } from "next/navigation";
+import * as client from "../client";
 export default function Profile() {
   const [profile, setProfile] = useState<User | null>(null);
   const dispatch = useDispatch();
-  const router = useRouter();
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
   );
+  const updateProfile = async () => {
+    const updatedProfile = await client.updateUser(profile);
+    dispatch(setCurrentUser(updatedProfile));
+  };
+
   const fetchProfile = () => {
     if (!currentUser) return redirect("/Account/Signin");
     setProfile(currentUser);
   };
-  const signout = () => {
+  const signout = async () => {
+    await client.signout();
     dispatch(setCurrentUser(null));
-    // redirect("/Account/Signin");
-    router.push("/Signin");
+    redirect("/Account/Signin");
   };
 
   useEffect(() => {
@@ -102,14 +105,16 @@ export default function Profile() {
             <option value="FACULTY">Faculty</option>
             <option value="STUDENT">Student</option>
           </select>
-
-          <Link
-            href="Signin"
-            onClick={signout}
-            className="btn btn-danger w-100 mb-2"
+          <button
+            onClick={updateProfile}
+            className="btn btn-primary w-100 mb-2"
           >
+            Update
+          </button>
+
+          <button onClick={signout} className="btn btn-danger w-100 mb-2">
             Sign out
-          </Link>
+          </button>
         </div>
       )}
     </div>

@@ -34,6 +34,7 @@ export default function WorkingWithObjectsAsynchronously() {
         Update Title
       </button>
       <FormControl
+        as="textarea"
         rows={3}
         defaultValue={assignment.description}
         className="mb-2"
