@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { v4 as uuidv4 } from "uuid";
-
 const initialState = {
-  assignments: [],
+  assignments: [] as any[],
 };
 const assignmentsSlice = createSlice({
   name: "assignments",
