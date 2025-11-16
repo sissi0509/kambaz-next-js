@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+
 import { setCurrentUser } from "../reducer";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 import * as client from "../client";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const [user, setUser] = useState<any>({
@@ -14,11 +15,12 @@ export default function Signup() {
   });
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
+  const router = useRouter();
   const signup = async () => {
     try {
       const currentUser = await client.signup(user);
       dispatch(setCurrentUser(currentUser));
-      redirect("/Profile");
+      router.push("/Dashboard");
     } catch (e: any) {
       setError(e.message);
     }

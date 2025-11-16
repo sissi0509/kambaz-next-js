@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 import * as client from "../client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Credentials = {
   username: string;
@@ -17,19 +17,25 @@ export default function Signin() {
     username: "",
     password: "",
   });
+  const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const signin = async () => {
-    const user = await client.signin(credentials);
-    if (!user) return;
-    dispatch(setCurrentUser(user));
-    redirect("/Dashboard");
+    try {
+      const user = await client.signin(credentials);
+      dispatch(setCurrentUser(user));
+      router.push("/Dashboard");
+    } catch (e: any) {
+      setError(e.message);
+    }
   };
 
   return (
     <div id="wd-signin-screen">
       <h1>Sign in</h1>
+      {error && <div className="alert alert-danger">{error}</div>}
       <FormControl
         defaultValue={credentials.username}
         onChange={(e) =>

@@ -2,8 +2,14 @@
 import Link from "next/link";
 import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewCourse, deleteCourse, updateCourse } from "../Courses/reducer";
+import {
+  addNewCourse,
+  deleteCourse,
+  updateCourse,
+  setCourses,
+} from "../Courses/reducer";
 import { enroll, unenroll } from "./reducer";
+import * as client from "../Courses/client";
 import {
   Row,
   Col,
@@ -15,7 +21,7 @@ import {
   Button,
   FormControl,
 } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 
 export default function Dashboard() {
@@ -53,11 +59,48 @@ export default function Dashboard() {
         enrollment.user === currentUser?._id && enrollment.course === courseID
     );
 
-  const visibleCourses = showAll
-    ? courses
-    : courses.filter((c: any) => isEnrolled(c._id));
+  // const visibleCourses = showAll
+  //   ? courses
+  //   : courses.filter((c: any) => isEnrolled(c._id));
+
+  const visibleCourses = courses;
+
+  const onAddNewCourse = async () => {
+    const newCourse = await client.createCourse(course);
+    dispatch(setCourses([...courses, newCourse]));
+  };
+  const onDeleteCourse = async (courseId: string) => {
+    const status = await client.deleteCourse(courseId);
+    dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
+  };
 
   const isFaculty = currentUser?.role === "FACULTY";
+  const onUpdateCourse = async () => {
+    await client.updateCourse(course);
+    dispatch(
+      setCourses(
+        courses.map((c) => {
+          if (c._id === course._id) {
+            return course;
+          } else {
+            return c;
+          }
+        })
+      )
+    );
+  };
+
+  const fetchCourses = async () => {
+    try {
+      const courses = await client.findMyCourses();
+      dispatch(setCourses(courses));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchCourses();
+  }, [currentUser]);
 
   if (!currentUser) {
     return redirect("/Account/Signin");
@@ -83,13 +126,13 @@ export default function Dashboard() {
             <button
               className="btn btn-primary float-end me-2"
               id="wd-add-new-course-click"
-              onClick={() => dispatch(addNewCourse(course))}
+              onClick={onAddNewCourse}
             >
               Add
             </button>
             <button
               className="btn btn-warning float-end me-2"
-              onClick={() => dispatch(updateCourse(course))}
+              onClick={onUpdateCourse}
               id="wd-update-course-click"
             >
               Update
@@ -118,33 +161,31 @@ export default function Dashboard() {
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {visibleCourses.map((course) => (
-            <Col className="wd-dashboard-course" key={course._id}>
+          {visibleCourses.map((c) => (
+            <Col className="wd-dashboard-course" key={c._id}>
               <Card>
                 <Link
                   href={
-                    isEnrolled(course._id)
-                      ? `/Courses/${course._id}/Home`
-                      : "/Dashboard"
+                    isEnrolled(c._id) ? `/Courses/${c._id}/Home` : "/Dashboard"
                   }
                   className="wd-dashboard-course-link text-decoration-none text-dark"
                 >
                   <CardImg
                     variant="top"
-                    src={`images/${course.image}`}
+                    src={`images/${c.image}`}
                     width="100%"
                     height={160}
                     alt=""
                   />
                   <CardBody>
                     <CardTitle className="wd-dashboard-course-title text-nowrap overflow-hidden">
-                      {course.name}
+                      {c.name}
                     </CardTitle>
                     <CardText
                       className="wd-dashboard-course-description overflow-hidden"
                       style={{ height: "100px" }}
                     >
-                      {course.description}
+                      {c.description}
                     </CardText>
                     <div className="d-flex justify-content-between">
                       {!showAll && <Button className="btn-sm"> Go </Button>}
@@ -154,7 +195,7 @@ export default function Dashboard() {
                             className="btn btn-sm btn-warning me-1"
                             onClick={(e) => {
                               e.preventDefault();
-                              setCourse(course);
+                              setCourse(c);
                             }}
                           >
                             Edit
@@ -163,7 +204,7 @@ export default function Dashboard() {
                             className="btn btn-sm btn-danger "
                             onClick={(event) => {
                               event.preventDefault();
-                              dispatch(deleteCourse(course._id));
+                              onDeleteCourse(c._id);
                             }}
                           >
                             Delete
