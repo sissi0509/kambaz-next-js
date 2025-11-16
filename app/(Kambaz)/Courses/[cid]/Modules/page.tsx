@@ -7,7 +7,7 @@ import { BsGripVertical } from "react-icons/bs";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import * as client from "../../client";
-import { setModules, editModule, updateModule, deleteModule } from "./reducer";
+import { setModules, editModule, updateModule } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
 import type { Module } from "./type";
