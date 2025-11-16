@@ -10,9 +10,10 @@ import { GoTriangleDown } from "react-icons/go";
 import { RootState } from "../../../store";
 import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAssignment } from "./reducer";
+import { deleteAssignment, setAssignments } from "./reducer";
 import { FaTrash } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import * as client from "../../client";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -31,8 +32,9 @@ export default function Assignments() {
   const handleDelete = (id: string) => {
     setDeleteId(id);
   };
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (deleteId) {
+      await client.deleteAssignment(deleteId);
       dispatch(deleteAssignment(deleteId));
     }
     setDeleteId(null);
@@ -58,6 +60,14 @@ export default function Assignments() {
       .replace("AM", "am")
       .replace("PM", "pm");
   };
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
 
   return (
     <div id="wd-assignments">

@@ -2,12 +2,7 @@
 import Link from "next/link";
 import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addNewCourse,
-  deleteCourse,
-  updateCourse,
-  setCourses,
-} from "../Courses/reducer";
+import { setCourses } from "../Courses/reducer";
 import { enroll, unenroll } from "./reducer";
 import * as client from "../Courses/client";
 import {
@@ -29,17 +24,13 @@ export default function Dashboard() {
     (state: RootState) => state.coursesReducer.courses
   );
 
-  const enrollments = useSelector(
-    (state: RootState) => state.enrollmentsReducer.enrollments
-  );
-
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
   );
 
   const dispatch = useDispatch();
 
-  const [course, setCourse] = useState({
+  const emtpyCourse = {
     _id: "0",
     name: "New Course",
     number: "New Number",
@@ -49,29 +40,54 @@ export default function Dashboard() {
     department: "D123",
     credits: 4,
     description: "New Description",
-  });
+  };
+
+  const [course, setCourse] = useState(emtpyCourse);
 
   const [showAll, setShowAll] = useState(false);
+  const [myCourses, setMyCourses] = useState<any[]>([]);
+  const [allCourses, setAllCourses] = useState<any[]>([]);
 
-  const isEnrolled = (courseID: string) =>
-    enrollments.some(
-      (enrollment) =>
-        enrollment.user === currentUser?._id && enrollment.course === courseID
-    );
+  const isEnrolled = (courseId: string) =>
+    myCourses.some((c) => c._id === courseId);
 
-  // const visibleCourses = showAll
-  //   ? courses
-  //   : courses.filter((c: any) => isEnrolled(c._id));
+  const loadCourses = async () => {
+    const [all, mine] = await Promise.all([
+      client.fetchAllCourses(),
+      client.findMyCourses(),
+    ]);
+    setAllCourses(all);
+    setMyCourses(mine);
+  };
+  useEffect(() => {
+    if (!currentUser) return;
+    loadCourses();
+  }, [currentUser]);
 
-  const visibleCourses = courses;
+  const handleEnroll = async (courseId: string) => {
+    await client.enrollInCourse(courseId);
+    const mine = await client.findMyCourses();
+    setMyCourses(mine);
+  };
+
+  const handleUnenroll = async (courseId: string) => {
+    await client.unenrollFromCourse(courseId);
+    const mine = await client.findMyCourses();
+    setMyCourses(mine);
+  };
+
+  const visibleCourses = showAll ? allCourses : myCourses;
 
   const onAddNewCourse = async () => {
     const newCourse = await client.createCourse(course);
     dispatch(setCourses([...courses, newCourse]));
+    await loadCourses();
+    setCourse(emtpyCourse);
   };
   const onDeleteCourse = async (courseId: string) => {
-    const status = await client.deleteCourse(courseId);
+    await client.deleteCourse(courseId);
     dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
+    await loadCourses();
   };
 
   const isFaculty = currentUser?.role === "FACULTY";
@@ -88,19 +104,9 @@ export default function Dashboard() {
         })
       )
     );
+    await loadCourses();
+    setCourse(emtpyCourse);
   };
-
-  const fetchCourses = async () => {
-    try {
-      const courses = await client.findMyCourses();
-      dispatch(setCourses(courses));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchCourses();
-  }, [currentUser]);
 
   if (!currentUser) {
     return redirect("/Account/Signin");
@@ -214,17 +220,12 @@ export default function Dashboard() {
                     </div>
                     {showAll && (
                       <div>
-                        {isEnrolled(course._id) ? (
+                        {isEnrolled(c._id) ? (
                           <Button
                             className="btn btn-sm btn-danger mt-1 me-1"
                             onClick={(e) => {
                               e.preventDefault();
-                              dispatch(
-                                unenroll({
-                                  user: currentUser!._id,
-                                  course: course._id,
-                                })
-                              );
+                              handleUnenroll(c._id);
                             }}
                           >
                             {"Unenroll"}
@@ -234,12 +235,7 @@ export default function Dashboard() {
                             className="btn btn-sm btn-success mt-1 me-1"
                             onClick={(e) => {
                               e.preventDefault();
-                              dispatch(
-                                enroll({
-                                  user: currentUser!._id,
-                                  course: course._id,
-                                })
-                              );
+                              handleEnroll(c._id);
                             }}
                           >
                             {"Enroll"}

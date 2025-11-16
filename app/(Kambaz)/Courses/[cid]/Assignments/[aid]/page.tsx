@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { RootState } from "../../../../store";
 import { useState } from "react";
-import { addAssignment, updateAssignment } from "../reducer";
+import { setAssignments } from "../reducer";
 import { useDispatch, useSelector } from "react-redux";
+import * as client from "../../../client";
 
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
@@ -32,31 +33,26 @@ export default function AssignmentEditor() {
   );
   const [untilDate, setUntilDate] = useState(existing?.untilDate ?? nowIso);
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    const newAssignment = {
+      title,
+      description,
+      course: cid,
+      points: Number(points),
+      dueDate,
+      availableDate,
+      untilDate,
+    };
     if (isNew) {
-      dispatch(
-        addAssignment({
-          title,
-          description,
-          course: cid,
-          points: Number(points),
-          dueDate,
-          availableDate,
-          untilDate,
-        })
-      );
+      await client.createAssignmentForCourse(cid as string, newAssignment);
+      dispatch(setAssignments([...assignments, newAssignment]));
     } else if (existing) {
-      dispatch(
-        updateAssignment({
-          ...existing,
-          title,
-          description,
-          points: Number(points),
-          dueDate,
-          availableDate,
-          untilDate,
-        })
+      const updatedAssignment = { ...existing, ...newAssignment };
+      await client.updateAssignment(updatedAssignment);
+      const newAssignments = assignments.map((a: any) =>
+        a._id === aid ? updatedAssignment : a
       );
+      dispatch(setAssignments(newAssignments));
     }
   };
   const isFaculty = currentUser?.role === "FACULTY";
@@ -82,6 +78,9 @@ export default function AssignmentEditor() {
         </Link>
       </div>
     );
+  }
+  if (!currentUser) {
+    return redirect("/Account/Signin");
   }
 
   return (
