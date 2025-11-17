@@ -13,9 +13,19 @@ export default function TOC() {
     { href: "/Labs/Lab5", label: "Lab 5", id: "wd-lab3-link" },
     { href: "/", label: "Kambaz", id: "wd-kambaz-link" },
     {
-      href: "https://github.com/sissi0509",
-      label: "My GitHub",
-      id: "wd-github",
+      href: "https://github.com/sissi0509/kambaz-next-js",
+      label: "My GitHub client",
+      id: "wd-github-client",
+    },
+    {
+      href: "https://github.com/sissi0509/kambaz-node-server-app",
+      label: "My GitHub server",
+      id: "wd-github-server",
+    },
+    {
+      href: "https://kambaz-node-server-app-16dm.onrender.com",
+      label: "root of the server",
+      id: "wd-root-server",
     },
   ];
   return (
