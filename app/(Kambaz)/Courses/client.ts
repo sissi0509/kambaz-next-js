@@ -8,7 +8,7 @@ const MODULES_API = `${HTTP_SERVER}/api/modules`;
 const ASSIGNMENTS_API = `${HTTP_SERVER}/api/assignments`;
 
 export const fetchAllCourses = async () => {
-  const { data } = await axios.get(COURSES_API);
+  const { data } = await axiosWithCredentials.get(COURSES_API);
   return data;
 };
 
@@ -94,6 +94,13 @@ export const updateAssignment = async (assignment: any) => {
   const { data } = await axiosWithCredentials.put(
     `${ASSIGNMENTS_API}/${assignment._id}`,
     assignment
+  );
+  return data;
+};
+
+export const findMyEnrollments = async () => {
+  const { data } = await axiosWithCredentials.get(
+    `${USERS_API}/current/enrollments`
   );
   return data;
 };

@@ -1,5 +1,4 @@
 "use client";
-import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSelector } from "react-redux";
