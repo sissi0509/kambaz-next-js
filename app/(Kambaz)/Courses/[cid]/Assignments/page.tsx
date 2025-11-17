@@ -32,6 +32,7 @@ export default function Assignments() {
   const handleDelete = (id: string) => {
     setDeleteId(id);
   };
+
   const handleConfirmDelete = async () => {
     if (deleteId) {
       await client.deleteAssignment(deleteId);
