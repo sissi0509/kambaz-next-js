@@ -3,7 +3,6 @@ import Link from "next/link";
 import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourses } from "../Courses/reducer";
-import { enroll, unenroll } from "./reducer";
 import * as client from "../Courses/client";
 import {
   Row,
