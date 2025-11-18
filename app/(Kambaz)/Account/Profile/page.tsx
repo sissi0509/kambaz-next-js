@@ -88,6 +88,7 @@ export default function Profile() {
           <input
             value={profile.email}
             onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+            placeholder="Email"
             type="email"
             id="wd-email"
             className="form-control mb-2"
