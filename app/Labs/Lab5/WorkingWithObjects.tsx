@@ -113,6 +113,21 @@ export default function WorkingWithObjects() {
         onChange={(e) => setModule({ ...module, name: e.target.value })}
       />
       <hr />
+      <h4>Updata module description</h4>
+      <a
+        id="wd-update-module-name"
+        className="btn btn-primary float-end"
+        href={`${MODULE_API_URL}/Description/${module.description}`}
+      >
+        Update Description
+      </a>
+      <FormControl
+        className="w-75"
+        id="wd-module-name"
+        defaultValue={module.description}
+        onChange={(e) => setModule({ ...module, description: e.target.value })}
+      />
+      <hr />
 
       <h4>Retrieve Module Object</h4>
       <a
