@@ -2,8 +2,13 @@
 import Link from "next/link";
 import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
-import { setCourses } from "../Courses/reducer";
-import { setEnrollments } from "../Dashboard/reducer";
+import {
+  setCourses,
+  addNewCourse,
+  deleteCourse,
+  updateCourse,
+} from "../Courses/reducer";
+import { setEnrollments, enroll, unenroll } from "./reducer";
 import * as client from "../Courses/client";
 import {
   Row,
@@ -72,29 +77,36 @@ export default function Dashboard() {
   }, [currentUser]);
 
   const handleEnroll = async (courseId: string) => {
-    await client.enrollInCourse(courseId);
-    await loadInitialData();
+    const newEnrollment = await client.enrollInCourse(courseId);
+    dispatch(enroll(newEnrollment));
   };
 
   const handleUnenroll = async (courseId: string) => {
     await client.unenrollFromCourse(courseId);
-    await loadInitialData();
+    dispatch(
+      unenroll({
+        user: currentUser?._id,
+        course: courseId,
+      })
+    );
   };
 
   const onAddNewCourse = async () => {
-    await client.createCourse(course);
-    await loadInitialData();
+    const { course: created, enrollment } = await client.createCourse(course);
+    console.log(created, enrollment);
+    dispatch(addNewCourse(created));
+    dispatch(enroll(enrollment));
     setCourse(emtpyCourse);
   };
   const onDeleteCourse = async (courseId: string) => {
     await client.deleteCourse(courseId);
-    await loadInitialData();
+    dispatch(deleteCourse(courseId));
   };
 
   const isFaculty = currentUser?.role === "FACULTY";
   const onUpdateCourse = async () => {
-    await client.updateCourse(course);
-    await loadInitialData();
+    const updated = await client.updateCourse(course);
+    dispatch(updateCourse(updated));
     setCourse(emtpyCourse);
   };
 
