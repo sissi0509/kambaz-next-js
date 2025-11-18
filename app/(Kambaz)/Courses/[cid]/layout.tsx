@@ -13,7 +13,7 @@ export default function CoursesLayout({ children }: { children: ReactNode }) {
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
   );
-  const [course, setCourse] = useState(null);
+  const [course, setCourse] = useState<any>();
 
   const loadInitialData = async () => {
     const courseFromServer = await client.findCourseById(cid);
