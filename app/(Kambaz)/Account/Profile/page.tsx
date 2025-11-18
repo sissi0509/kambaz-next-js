@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
 import { RootState } from "../../store";
-import type { User, Role } from "../type";
+import type { User } from "../type";
 import * as client from "../client";
 export default function Profile() {
   const [profile, setProfile] = useState<User | null>(null);
@@ -96,9 +96,7 @@ export default function Profile() {
 
           <select
             className="form-control mb-2"
-            onChange={(e) =>
-              setProfile({ ...profile, role: e.target.value as Role })
-            }
+            onChange={(e) => setProfile({ ...profile, role: e.target.value })}
             id="wd-role"
           >
             <option value="USER">User</option>
