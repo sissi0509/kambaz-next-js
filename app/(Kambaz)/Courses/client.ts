@@ -18,6 +18,11 @@ export const findMyCourses = async () => {
   return data;
 };
 
+export const findCourseById = async (courseId: string) => {
+  const { data } = await axiosWithCredentials.get(`${COURSES_API}/${courseId}`);
+  return data;
+};
+
 export const createCourse = async (course: any) => {
   const { data } = await axiosWithCredentials.post(
     `${USERS_API}/current/courses`,
