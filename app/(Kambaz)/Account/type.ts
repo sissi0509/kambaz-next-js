@@ -1,4 +1,4 @@
-export type Role = "FACULTY" | "STUDENT" | "ADMIN" | "USER";
+// export type Role = "FACULTY" | "STUDENT" | "ADMIN" | "USER";
 export interface User {
   _id: string;
   username: string;
@@ -7,7 +7,7 @@ export interface User {
   lastName: string;
   email: string;
   dob: string;
-  role: Role;
+  role: string;
   loginId: string;
   section: string;
   lastActivity: string;
