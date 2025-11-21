@@ -17,6 +17,7 @@ import {
 } from "react-bootstrap";
 import { useState } from "react";
 import { redirect } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Dashboard() {
   const courses = useSelector(
@@ -59,6 +60,21 @@ export default function Dashboard() {
 
   const isFaculty = currentUser?.role === "FACULTY";
 
+  const handleAddCourse = () => {
+    const newCourseId = uuidv4();
+    const newCourse = { ...course, _id: newCourseId };
+
+    dispatch(addNewCourse(newCourse));
+    if (currentUser) {
+      dispatch(
+        enroll({
+          user: currentUser._id,
+          course: newCourseId,
+        })
+      );
+    }
+  };
+
   if (!currentUser) {
     return redirect("/Account/Signin");
   }
@@ -83,7 +99,7 @@ export default function Dashboard() {
             <button
               className="btn btn-primary float-end me-2"
               id="wd-add-new-course-click"
-              onClick={() => dispatch(addNewCourse(course))}
+              onClick={handleAddCourse}
             >
               Add
             </button>
