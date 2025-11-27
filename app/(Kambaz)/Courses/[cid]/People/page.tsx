@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 export default function People() {
   const [users, setUsers] = useState<any[]>([]);
 
-  const { cid } = useParams();
+  const { cid } = useParams() as { cid: string };
 
   const fetchUsers = async () => {
     if (!cid) return;
