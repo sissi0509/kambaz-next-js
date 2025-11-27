@@ -7,8 +7,10 @@ import {
   addNewCourse,
   deleteCourse,
   updateCourse,
+  setMyCourses,
+  addMyCourse,
+  removeMyCourse,
 } from "../Courses/reducer";
-import { setEnrollments, enroll, unenroll } from "./reducer";
 import * as client from "../Courses/client";
 import {
   Row,
@@ -29,18 +31,21 @@ export default function Dashboard() {
     (state: RootState) => state.coursesReducer.courses
   );
 
+  const myCourses = useSelector(
+    (state: RootState) => state.coursesReducer.myCourses
+  );
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
   );
 
-  const enrollments = useSelector(
-    (state: RootState) => state.enrollmentsReducer.enrollments
-  );
+  // const enrollments = useSelector(
+  //   (state: RootState) => state.enrollmentsReducer.enrollments
+  // );
 
   const dispatch = useDispatch();
 
   const emtpyCourse = {
-    _id: "0",
+    // _id: "0",
     name: "New Course",
     number: "New Number",
     startDate: "2023-09-10",
@@ -55,20 +60,24 @@ export default function Dashboard() {
 
   const [showAll, setShowAll] = useState(false);
 
-  const isEnrolled = (courseId: string) =>
-    enrollments.some(
-      (e) => e.course === courseId && e.user === currentUser?._id
-    );
-  const myCourses = allCourses.filter((c) => isEnrolled(c._id));
+  const isEnrolled = (courseId: string) => {
+    return myCourses.some((c) => c._id === courseId);
+  };
+
+  // const isEnrolled = (courseId: string) =>
+  //   enrollments.some(
+  //     (e) => e.course === courseId && e.user === currentUser?._id
+  //   );
+  // const myCourses = allCourses.filter((c) => isEnrolled(c._id));
   const visibleCourses = showAll ? allCourses : myCourses;
 
   const loadInitialData = async () => {
-    const [allCoursesFromServer, myEnrollments] = await Promise.all([
+    const [allCoursesFromServer, myCoursesFromServer] = await Promise.all([
       client.fetchAllCourses(),
-      client.findMyEnrollments(),
+      client.findMyCourses(),
     ]);
     dispatch(setCourses(allCoursesFromServer));
-    dispatch(setEnrollments(myEnrollments));
+    dispatch(setMyCourses(myCoursesFromServer));
   };
 
   useEffect(() => {
@@ -77,25 +86,21 @@ export default function Dashboard() {
   }, [currentUser]);
 
   const handleEnroll = async (courseId: string) => {
-    const newEnrollment = await client.enrollInCourse(courseId);
-    dispatch(enroll(newEnrollment));
+    await client.enrollInCourse(courseId);
+    const course = allCourses.find((c) => c._id === courseId);
+    if (course) {
+      dispatch(addMyCourse(course));
+    }
   };
 
   const handleUnenroll = async (courseId: string) => {
     await client.unenrollFromCourse(courseId);
-    dispatch(
-      unenroll({
-        user: currentUser?._id,
-        course: courseId,
-      })
-    );
+    dispatch(removeMyCourse(courseId));
   };
 
   const onAddNewCourse = async () => {
-    const { course: created, enrollment } = await client.createCourse(course);
-    console.log(created, enrollment);
+    const created = await client.createCourse(course);
     dispatch(addNewCourse(created));
-    dispatch(enroll(enrollment));
     setCourse(emtpyCourse);
   };
   const onDeleteCourse = async (courseId: string) => {
