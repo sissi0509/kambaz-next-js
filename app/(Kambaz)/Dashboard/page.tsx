@@ -174,7 +174,7 @@ export default function Dashboard() {
       <hr />
       <div id="wd-dashboard-courses">
         <Row xs={1} md={5} className="g-4">
-          {visibleCourses.map((c) => (
+          {visibleCourses.filter(Boolean).map((c) => (
             <Col className="wd-dashboard-course" key={c._id}>
               <Card>
                 <Link

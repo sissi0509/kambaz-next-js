@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { Module } from "./type";
-
 const initialState = {
   modules: [] as any[],
 };

@@ -4,7 +4,6 @@ const axiosWithCredentials = axios.create({ withCredentials: true });
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const COURSES_API = `${HTTP_SERVER}/api/courses`;
 const USERS_API = `${HTTP_SERVER}/api/users`;
-const ASSIGNMENTS_API = `${HTTP_SERVER}/api/assignments`;
 
 export const fetchAllCourses = async () => {
   const { data } = await axiosWithCredentials.get(COURSES_API);
@@ -80,9 +79,12 @@ export const findAssignmentsForCourse = async (courseId: string) => {
   return response.data;
 };
 
-export const deleteAssignment = async (assignmentId: string) => {
+export const deleteAssignment = async (
+  courseId: string,
+  assignmentId: string
+) => {
   const response = await axiosWithCredentials.delete(
-    `${ASSIGNMENTS_API}/${assignmentId}`
+    `${COURSES_API}/${courseId}/assignments/${assignmentId}`
   );
   return response.data;
 };
@@ -97,9 +99,9 @@ export const createAssignmentForCourse = async (
   return response.data;
 };
 
-export const updateAssignment = async (assignment: any) => {
+export const updateAssignment = async (courseId: string, assignment: any) => {
   const { data } = await axiosWithCredentials.put(
-    `${ASSIGNMENTS_API}/${assignment._id}`,
+    `${COURSES_API}/${courseId}/assignments/${assignment._id}`,
     assignment
   );
   return data;
@@ -117,6 +119,7 @@ export const enrollInCourse = async (courseId: string) => {
     `${USERS_API}/enrollments/${courseId}`,
     {}
   );
+  console.log(data);
   return data;
 };
 

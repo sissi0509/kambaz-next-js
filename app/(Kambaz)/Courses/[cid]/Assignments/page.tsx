@@ -16,9 +16,9 @@ import { useEffect, useState } from "react";
 import * as client from "../../client";
 
 export default function Assignments() {
-  const { cid } = useParams();
-  const assignments: any = useSelector((state: RootState) =>
-    state.assignmentsReducer.assignments.filter((a: any) => a.course === cid)
+  const { cid } = useParams<{ cid: string }>();
+  const assignments: any = useSelector(
+    (state: RootState) => state.assignmentsReducer.assignments
   );
   const { currentUser } = useSelector(
     (state: RootState) => state.accountReducer
@@ -35,7 +35,7 @@ export default function Assignments() {
 
   const handleConfirmDelete = async () => {
     if (deleteId) {
-      await client.deleteAssignment(deleteId);
+      await client.deleteAssignment(cid, deleteId);
       dispatch(deleteAssignment(deleteId));
     }
     setDeleteId(null);
@@ -65,10 +65,11 @@ export default function Assignments() {
   const fetchAssignments = async () => {
     const assignments = await client.findAssignmentsForCourse(cid as string);
     dispatch(setAssignments(assignments));
+    console.log("ass:", assignments);
   };
   useEffect(() => {
     fetchAssignments();
-  }, []);
+  }, [cid]);
 
   return (
     <div id="wd-assignments">

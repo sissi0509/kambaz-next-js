@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as client from "../../../client";
 
 export default function AssignmentEditor() {
-  const { cid, aid } = useParams();
+  const { cid, aid } = useParams<{ cid: string; aid: string }>();
   const assignments: any = useSelector(
     (state: RootState) => state.assignmentsReducer.assignments
   );
@@ -21,23 +21,37 @@ export default function AssignmentEditor() {
 
   const existing = assignments.find((a: any) => a._id === aid);
   const isNew = aid === "new";
-  const nowIso = new Date().toISOString().slice(0, 16);
+
+  const toInputDateTime = (value?: string | Date) => {
+    if (!value) {
+      return new Date().toISOString().slice(0, 16);
+    }
+    const d = value instanceof Date ? value : new Date(value);
+    return d.toISOString().slice(0, 16);
+  };
+
+  // const formatDisplayDate = (value?: string | Date) => {
+  //   if (!value) return "";
+  //   const d = value instanceof Date ? value : new Date(value);
+  //   return d.toLocaleString();
+  // };
 
   const [title, setTitle] = useState(existing?.title ?? "");
   const [description, setDescription] = useState(existing?.description ?? "");
   const [points, setPoints] = useState(existing?.points ?? 0);
-  const [dueDate, setDueDate] = useState(existing?.dueDate ?? nowIso);
+  const [dueDate, setDueDate] = useState(toInputDateTime(existing?.dueDate));
 
   const [availableDate, setAvailableDate] = useState(
-    existing?.availableDate ?? nowIso
+    toInputDateTime(existing?.availableDate)
   );
-  const [untilDate, setUntilDate] = useState(existing?.untilDate ?? nowIso);
+  const [untilDate, setUntilDate] = useState(
+    toInputDateTime(existing?.untilDate)
+  );
 
   const handleSave = async () => {
     const newAssignment = {
       title,
       description,
-      course: cid,
       points: Number(points),
       dueDate,
       availableDate,
@@ -48,7 +62,7 @@ export default function AssignmentEditor() {
       dispatch(setAssignments([...assignments, newAssignment]));
     } else if (existing) {
       const updatedAssignment = { ...existing, ...newAssignment };
-      await client.updateAssignment(updatedAssignment);
+      await client.updateAssignment(cid, updatedAssignment);
       const newAssignments = assignments.map((a: any) =>
         a._id === aid ? updatedAssignment : a
       );
@@ -114,7 +128,7 @@ export default function AssignmentEditor() {
             type="number"
             className="rounded-0"
             value={points}
-            onChange={(e) => setPoints(e.target.value)}
+            onChange={(e) => setPoints(Number(e.target.value))}
           />
         </Col>
       </Row>
